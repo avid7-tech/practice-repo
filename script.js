@@ -1,33 +1,24 @@
-let time = 10 * 60; // 10 minutes in seconds
-const timerElement = document.getElementById("timer");
-const restartBtn = document.getElementById("restart");
-let timerInterval;
+document.addEventListener('DOMContentLoaded', () => {
+    const letters = document.querySelectorAll('.text-container span');
 
-function updateTimer() {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  timerElement.textContent =
-    `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  if (time > 0) {
-    time--;
-  } else {
-    clearInterval(timerInterval);
-    timerElement.textContent = "⏰ Time's up!";
-    timerElement.classList.remove("pulse");
-    timerElement.style.color = "#FFD700";
-  }
-}
+    letters.forEach(letter => {
+        // Skip the space elements
+        if (letter.classList.contains('space')) {
+            return;
+        }
 
-function startTimer() {
-  clearInterval(timerInterval);
-  time = 10 * 60;
-  timerElement.style.color = "#fff";
-  timerElement.classList.add("pulse");
-  updateTimer();
-  timerInterval = setInterval(updateTimer, 1000);
-}
+        // Apply a random transform on mouseover
+        letter.addEventListener('mouseover', () => {
+            const randomX = Math.random() * 20 - 10; // -10px to 10px
+            const randomY = Math.random() * 20 - 10; // -10px to 10px
+            const randomRot = Math.random() * 30 - 15; // -15deg to 15deg
+            
+            letter.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRot}deg) scale(1.1)`;
+        });
 
-restartBtn.addEventListener("click", startTimer);
-
-// Start automatically
-startTimer();
+        // Reset the transform on mouseout
+        letter.addEventListener('mouseout', () => {
+            letter.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+        });
+    });
+});
